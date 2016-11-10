@@ -1,9 +1,3 @@
-1.the structure of the program
-	
+This is a demo of token ring network which running on the genomote device with TinyOS.
 
-	
-2.how to compile the code
-
-
-
-3.how to run the code and show the token ring network
+The code is very simple, and the detail desin is in the readme.pdf
