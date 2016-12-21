@@ -1,0 +1,2 @@
+COMPONENT=EdgeRouterAppC
+include $(MAKERULES)
