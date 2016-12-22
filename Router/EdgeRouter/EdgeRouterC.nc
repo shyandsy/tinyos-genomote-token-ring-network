@@ -134,12 +134,12 @@ implementation {
 
   // receive the acknowledgement back from the core router
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    // make sure that the recieved packet is from the core router
+    // make sure that the received packet is from the core router
     if (len == sizeof(CoreEdgeMsg_t)) {
       CoreEdgeMsg_t *incomingMsg = (CoreEdgeMsg_t *) payload;
       // make sure that its the intended router
       if (incomingMsg->Bcast / ROUTER_MASK == TOS_NODE_ID) {
-        call Leds.led2Toggle(); // indicate acknowledgement receieved
+        call Leds.led2Toggle(); // indicate acknowledgement received
       }
     }
     return msg;

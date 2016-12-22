@@ -50,7 +50,7 @@ implementation {
   // recieves message from edge router then sends back acknowledgement
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
 
-    // make sure that the recieved packet is from the edge router
+    // make sure that the received packet is from the edge router
     if (len == sizeof(EdgeCoreMsg_t)) {
       EdgeCoreMsg_t *incomingMsg = (EdgeCoreMsg_t *) payload;
       // print out contents of edge router message for PrintfClient to display
