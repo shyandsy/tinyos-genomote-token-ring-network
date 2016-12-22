@@ -41,22 +41,24 @@ implementation {
   }
 
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) {
-    if (len == sizeof(RouterMsg_t)) {
-      RouterMsg_t *incomingMsg = (RouterMsg_t *) payload;
+    if (len == sizeof(EdgeCoreMsg_t)) {
+      EdgeCoreMsg_t *incomingMsg = (EdgeCoreMsg_t *) payload;
       printf("Message received... ");
-      printf("E%dH%d ", incomingMsg->From / 100, incomingMsg->From % 100);
-      printf("E%dH%d ", incomingMsg->Bcast / 100, incomingMsg->Bcast % 100);
-      printf("E%dH%d\n", incomingMsg->Msg / 100, incomingMsg->Msg % 100);
+      printf("E%dH%d ", incomingMsg->From / ROUTER_MASK, incomingMsg->From % ROUTER_MASK);
+      printf("E%dH%d ", incomingMsg->Bcast / ROUTER_MASK, incomingMsg->Bcast % ROUTER_MASK);
+      printf("E%dH%d+", (incomingMsg->Msg).From / ROUTER_MASK, (incomingMsg->Msg).From % ROUTER_MASK);
+      printf("E%dH%d+", (incomingMsg->Msg).Bcast / ROUTER_MASK, (incomingMsg->Msg).Bcast % ROUTER_MASK);
+      printf("%d\n", (incomingMsg->Msg).Msg);
       printfflush();
       call Leds.led2Toggle();
 
       if (mRadioBusy == FALSE) {
-        RouterMsg_t *destPayload = call Packet.getPayload(&mPacket, sizeof(RouterMsg_t));
+        CoreEdgeMsg_t *destPayload = call Packet.getPayload(&mPacket, sizeof(CoreEdgeMsg_t));
         destPayload->From = TOS_NODE_ID;
         destPayload->Bcast = incomingMsg->From;
         destPayload->Msg = 200;
       
-        if (call AMSend.send(incomingMsg->From / 100, &mPacket, sizeof(RouterMsg_t)) == SUCCESS) {
+        if (call AMSend.send(incomingMsg->From / ROUTER_MASK, &mPacket, sizeof(CoreEdgeMsg_t)) == SUCCESS) {
           mRadioBusy = TRUE;
           call Leds.led1Toggle();
         }
